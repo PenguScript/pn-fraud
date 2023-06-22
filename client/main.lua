@@ -1,30 +1,77 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local FraudCheckPos = Config.FraudCheckPosition
+--REMOVED FROM HERE
 
-Citizen.CreateThread(function()
-    RequestModel(Config.FraudCheckModel)
-    while not HasModelLoaded(Config.FraudCheckModel) do
-        RequestModel(Config.FraudCheckModel)
-        Wait(1)
+-- local FraudCheckPos = Config.FraudCheckPosition
+
+-- Citizen.CreateThread(function()
+--     RequestModel(Config.FraudCheckModel)
+--     while not HasModelLoaded(Config.FraudCheckModel) do
+--         RequestModel(Config.FraudCheckModel)
+--         Wait(1)
+--     end
+--     local FraudCheckPed = CreatePed(0, Config.FraudCheckModel, FraudCheckPos.x, FraudCheckPos.y, FraudCheckPos.z, FraudCheckPos.w, true)
+--     SetEntityInvincible(FraudCheckPed, true)
+--     SetBlockingOfNonTemporaryEvents(FraudCheckPed, true)
+--     Citizen.Wait(1350)
+--     TaskStartScenarioInPlace(FraudCheckPed, "CODE_HUMAN_CROSS_ROAD_WAIT", 0, true)
+--     FreezeEntityPosition(FraudCheckPed, true)
+--     exports['qb-target']:AddTargetEntity(FraudCheckPed, {
+--         options = {
+--             {
+--                 type = "Client",
+--                 event = "pn-fraud:FraudCheckMenu",
+--                 icon = Config.FraudCheckIcon,
+--                 label = Config.FraudCheckName,
+--             }
+--         },
+--         distance = 2.5,
+--     })
+-- end)
+
+--REMOVED TO HERE
+
+CreateThread(function()
+    for k,v in pairs(Config.Peds) do
+        if v.Model and v.Coords then
+            local model = ''
+            model = v.Model
+            local Icon = 'fa fa-money'
+            local Name = "???"
+
+            if v.Icon then
+                Icon = v.Icon
+            end
+            if v.Name then
+                Name = v.Name
+            end
+
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                RequestModel(model)
+                Wait(1)
+            end
+            local FraudCheckPed = CreatePed(0, model, v.Coords.x, v.Coords.y, v.Coords.z, v.Coords.w, true)
+            SetEntityInvincible(FraudCheckPed, true)
+            SetBlockingOfNonTemporaryEvents(FraudCheckPed, true)
+            Wait(1350)
+            TaskStartScenarioInPlace(FraudCheckPed, "CODE_HUMAN_CROSS_ROAD_WAIT", 0, true)
+            FreezeEntityPosition(FraudCheckPed, true)
+            exports['qb-target']:AddTargetEntity(FraudCheckPed, {
+                options = {
+                    {
+                        type = "Client",
+                        event = "pn-fraud:FraudCheckMenu",
+                        icon = Icon,
+                        label = Name,
+                    }
+                },
+                distance = 2.5,
+            })
+        else
+            print("PN-Fraud:Model or Coords Not Configured Correctly")
+        end
     end
-    local FraudCheckPed = CreatePed(0, Config.FraudCheckModel, FraudCheckPos.x, FraudCheckPos.y, FraudCheckPos.z, FraudCheckPos.w, true)
-    SetEntityInvincible(FraudCheckPed, true)
-    SetBlockingOfNonTemporaryEvents(FraudCheckPed, true)
-    Citizen.Wait(1350)
-    TaskStartScenarioInPlace(FraudCheckPed, "CODE_HUMAN_CROSS_ROAD_WAIT", 0, true)
-    FreezeEntityPosition(FraudCheckPed, true)
-    exports['qb-target']:AddTargetEntity(FraudCheckPed, {
-        options = {
-            {
-                type = "Client",
-                event = "pn-fraud:FraudCheckMenu",
-                icon = Config.FraudCheckIcon,
-                label = Config.FraudCheckName,
-            }
-        },
-        distance = 2.5,
-    })
 end)
 
 --[[local function hasCheck(type)
