@@ -1,6 +1,6 @@
 # pn-fraud
 
-Discord: https://dsc.gg/penguscripts/
+Discord: https://discord.gg/AS7U5GK4TE
 Other Scripts: https://penguscripts.tebex.io/
 
 
